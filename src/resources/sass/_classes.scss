@@ -1,0 +1,21 @@
+.btn{
+	height: 36px;
+	border-radius: 20px;
+	overflow: hidden;
+	cursor: pointer;
+	transition: background .3s;
+
+	a{
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		padding: 0px 15px;
+
+		i{
+			margin-right: 5px;
+		}
+	}
+
+}
