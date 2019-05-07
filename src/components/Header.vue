@@ -21,18 +21,20 @@
 				<router-link to="/">Автосервисы</router-link>
 			</div>
 
-			<div class="btn-menu">
+			<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
 				<img src="@/assets/img/icons/menu.svg" alt="">
 			</div>
 		</div>
 
-		<div class="right-menu">
-			<nav>
-				<a href="">Сервисам</a>
-				<a href="">Рекламодателям</a>
-				<a href="">О проекте</a>
-			</nav>
-		</div>	
+		<transition enter-active-class="animated slideInRight" leave-active-class="animated fadeOut">
+		    <div class="right-menu" v-show="stateMenu">
+				<nav>
+					<a href="">Сервисам</a>
+					<a href="">Рекламодателям</a>
+					<a href="">О проекте</a>
+				</nav>
+			</div>
+		</transition>		
 	</header>
 </template>
 
@@ -46,7 +48,17 @@
 					{name: 'Южно-Сахалинск', code: 'ys'},
 					{name: 'Долинск', code: 'dolinsk'},
 					{name: 'Корсаков', code: 'korsakov'},
-				]
+				],
+
+				stateMenu: false
+			}
+		},
+
+		methods:{
+			rightMenu: function(){
+				console.log(111);
+
+				//this.stateMenu = (this.stateMenu == false)? true: false;
 			}
 		}
 	}
@@ -113,8 +125,9 @@
 		
 		
 		.right-menu{
+			//display: none;
 			height: 100%;
-			width: 400px;
+			width: 100px;
 			position: fixed;
 			right: 0;
 			top: 0;
