@@ -8,11 +8,11 @@
 			</div>
 
 			<div class="cities">
-				<select name="" id="">
-					<option v-for="city in cities" :value="city.code">
+				<select>
+					<option v-for="city in cities" v-bind:value="city.code">
 						{{ city.name }}
 					</option>
-				</select>
+				</select> 
 			</div>
 		</div>
 
@@ -24,6 +24,14 @@
 			<div class="btn-menu">
 				<img src="@/assets/img/icons/menu.svg" alt="">
 			</div>
+		</div>
+
+		<div class="right-menu">
+			<nav>
+				<a href="">Сервисам</a>
+				<a href="">Рекламодателям</a>
+				<a href="">О проекте</a>
+			</nav>
 		</div>	
 	</header>
 </template>
@@ -44,7 +52,6 @@
 	}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 	header{
 		width: 100%;
@@ -105,7 +112,16 @@
 		}
 		
 		
-
-		
+		.right-menu{
+			height: 100%;
+			width: 400px;
+			position: fixed;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			z-index: 999;
+			background: #fff;
+			box-shadow: -3px 0px 5px 0px rgba(0,0,0,0.25);
+		}
 	}
 </style>
