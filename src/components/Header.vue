@@ -26,12 +26,19 @@
 			</div>
 		</div>
 
-		<transition enter-active-class="animated slideInRight" leave-active-class="animated fadeOut">
+		<transition>
 		    <div class="right-menu" v-show="stateMenu">
+
+		    	<div class="topSection">
+		    		<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
+						<img src="@/assets/img/icons/close-menu.svg" alt="">
+					</div>
+		    	</div>
+
 				<nav>
-					<a href="">Сервисам</a>
-					<a href="">Рекламодателям</a>
-					<a href="">О проекте</a>
+					<router-link to="/services">Сервисам</router-link>
+					<router-link to="/adv">Рекламодателям</router-link>
+					<router-link to="/about">О проекте</router-link>
 				</nav>
 			</div>
 		</transition>		
@@ -93,7 +100,29 @@
 			}	
 		}
 
+		// кнопка открыть-закрыть меню
+		.btn-menu{
+			//border: 1px solid;
+			flex: none;
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+
+			img{
+				width: 20px;
+				height: 20px;
+				display: block;
+			}
+		}
+
 		.rigth-section{
+
+			.btn-menu{
+				margin-left: 50px;
+			}
 
 			.top-navigation{
 				a{
@@ -104,30 +133,12 @@
 					letter-spacing: .5px;
 				}
 			}
-
-			.btn-menu{
-				margin-left: 50px;
-				border: 1px solid;
-				flex: none;
-				width: 40px;
-				height: 40px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				cursor: pointer;
-
-				img{
-					width: 24px;
-					height: 24px;
-				}
-			}
 		}
 		
 		
 		.right-menu{
-			//display: none;
 			height: 100%;
-			width: 100px;
+			width: 350px;
 			position: fixed;
 			right: 0;
 			top: 0;
@@ -135,6 +146,34 @@
 			z-index: 999;
 			background: #fff;
 			box-shadow: -3px 0px 5px 0px rgba(0,0,0,0.25);
+			padding: 5px;
+			padding-left: 30px;
+
+			.topSection{
+				display: flex;
+				justify-content: flex-end;
+				width: 100%;
+				//border: 1px solid red;
+				margin-bottom: 30px;
+
+				.btn-menu{
+					
+				}
+			}
+
+			nav{
+				display: flex;
+				flex-direction: column;
+
+				a{
+					width: 100%;
+					margin-bottom: 10px;
+					padding: 5px 0;
+					text-decoration: none;
+					color: #000;
+					font-size: 18px;
+				}
+			}
 		}
 	}
 </style>
