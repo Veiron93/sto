@@ -6,12 +6,16 @@
 </template>
 
 <script>
+	import common from '@/resources/js/common.js';
+
 	export default {
 		components: {
 			Header: () => import('@/components/Header.vue'),
 			//Footer: () => import('@/components/Footer.vue'),
 		}
 	}
+
+	
 </script>
 
 <style lang="scss">
