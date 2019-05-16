@@ -18,7 +18,7 @@
 
 		<div class="time">
 			<p>
-				{{(dayOff)? 'закрыто' : 'до закрытия:'}}
+				{{(dayOff)? 'закрыто' : 'до закрытия: ' + time}}
 			</p>
 		</div>
 	</div>
@@ -39,46 +39,28 @@
 				nowDate: new Date(),
 				dayOff: false,
 				anotherTime: false,
-				timeToClose: ""
+				time: ""
 			}
 		},
 
 		methods:{
-			getTimeClose: function(){
-
+			// проверка на выходной
+			checkDayOff: function(){
 				let days = this.service.schedule.days;
 	
 				if(this.dayOff != true){
 
-					var day = this.nowDate.getDay();
+					let day = this.nowDate.getDay();
 
-					if(day == 0){
-						day = 6;
-					}	
+					day = (day == 0)? 6 : day - 1;
 
-					// проверка на выходной
 					if(days[day].length == 0){
 						this.dayOff = true;
-					}else{
-
 					}
-
-					console.log()
-
-
-					// days.forEach( (e) => {
-
-					// 	console.log(e.length)
-
-					// 	if(e.length == 0){
-					// 		this.dayOff = true;
-					// 	}
-					// })
-					
 				}
 			},
 
-			getSchedule: function(){
+			exceptions: function(){
 
 				let exceptions = this.service.schedule.exceptions;
 
@@ -93,11 +75,11 @@
 						// df (day off) - не рабочий день 
 						// at (another time) - другое время в определённый день 
 
-						let typeExceptions = e.split('-')[0];
+						let typeExceptions = e.type;
 
 						if(typeExceptions == "df"){
 
-							let dayOff = e.split('-')[1];
+							let dayOff = e.date;
 							
 							if(dayOff == day){
 								this.dayOff = true;
@@ -105,11 +87,7 @@
 
 						}else if(typeExceptions == "at"){
 							
-							let anotherTimeDate = e.split('-')[1];	
-							//let anotherTimeTimeClose = e.split('-')[3];
-
-							//let h = parseInt(this.nowDate.getHours() * 60);
-							//let m = parseInt(this.nowDate.getMinutes());
+							let anotherTimeDate = e.date.split('-')[0];	
 
 							if(anotherTimeDate == day){
 								this.anotherTime = true;
@@ -118,93 +96,44 @@
 					});
 				}
 			},
+
+			timeToClose: function(){
+				let days = this.service.schedule.days;
+				let day = this.nowDate.getDay();
+				let numberDay = (day == 0)? 6 : day - 1;
+
+				if(days[numberDay].length != 0){
+
+					let timeClose = days[numberDay].split('-')[1].split(':');
+
+					let h = parseInt(this.nowDate.getHours() * 60);
+					let m = parseInt(this.nowDate.getMinutes());
+
+					let closeHours = parseInt(timeClose[0] * 60);
+					let closeMinutes = parseInt(timeClose[1]);
+
+					let diffTime = ((closeHours + closeMinutes) - (h + m));	
+
+					if(diffTime > 0){
+
+						closeHours = Math.floor(diffTime / 60 % 24);
+						closeMinutes = Math.floor(diffTime % 60);
+
+						this.time = `${(Math.floor(diffTime % 60) < 10)? '0': ''}${closeHours}:${(Math.floor(closeMinutes % 60) < 10)? '0': ''}${closeMinutes}`;
+					}else{
+						this.dayOff = true;
+					}
+				}
+			},
 		},
 
 		mounted() {
-			this.getSchedule();
-			this.getTimeClose();
+			this.exceptions();
+			this.checkDayOff();
+			this.timeToClose();
 		},
 
 		computed: {
-
-
-			// getSchedule: function(){
-
-			// 	let exceptions = this.service.schedule.exceptions;
-
-			// 	for(var i=0; i < exceptions.length; i++){
-
-			// 		// проверка на нерабочий день
-			// 		if(exceptions[i].dayOff.length > 0){
-
-			// 			if(this.today == exceptions[i].dayOff){
-			// 				this.time = "close";
-
-			// 			}	
-
-			// 		}else{
-
-
-			// 			// проверка на сокращенный день
-			// 			if(exceptions[i].shortenedDay.length > 0){
-			// 				(this.today == exceptions[i].shortenedDay)? this.shortenedDay = true : '';
-
-
-			// 			}
-
-			// 			// вычисление времени до закрытия
-			// 			if(this.shortenedDay == true){
-
-
-
-
-			// 			}else{
-							
-			// 				let dayWeek = moment().format("dddd");
-			// 				let days = this.service.schedule.days;
-
-			// 				//console.log(days)
-
-			// 				days.forEach((element, index) => {
-
-
-
-			// 					// проверка на выходной
-			// 					if(index + 1 == moment().format("d")){
-
-			// 						if(element.length > 0){
-	
-			// 							let date = new Date();
-			// 							let closeTime = element.split('-')[1].split(':');
-
-			// 							let nowHours = parseInt(date.getHours() * 60);
-			// 							let nowMinutes = parseInt(date.getMinutes());
-
-			// 							let closeHours = parseInt(closeTime[0] * 60);
-			// 							let closeMinutes =  parseInt(closeTime[1]);
-
-			// 							let diffMinutes = ((closeHours + closeMinutes) - (nowHours + nowMinutes));
-
-			// 							if(diffMinutes > 0){
-
-			// 								closeHours = Math.floor(diffMinutes / 60 % 24);
-			// 								closeMinutes = Math.floor(diffMinutes % 60);
-
-			// 								this.time = true;
-			// 								this.timeLeft = `${(Math.floor(diffMinutes % 60) < 10)? '0': ''}${closeHours}:${(Math.floor(closeMinutes % 60) < 10)? '0': ''}${closeMinutes}`;
-			// 							}else{
-			// 								this.time = "close";
-			// 							}
-
-			// 						}else{
-			// 							this.time = "close";
-			// 						}
-			// 					}
-			// 				});
-			// 			}
-			// 		}
-			// 	}
-			// },
 
 		},
 
