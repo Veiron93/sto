@@ -61,7 +61,7 @@ export default {
 					schedule: {
 						days: ["10:00-18:00", "10:00-18:00", "10:00-18:00", "10:00-22:00", "10:00-18:00", "", "10:00-22:00"],
 						exceptions: [
-							{date: "1557579600-10:00-14:00", type: "at"}
+							{id: "7", date: "1557579600-10:00-14:00", type: "at"}
 						],
 					}
 				},
@@ -71,29 +71,21 @@ export default {
 					price: "2500", 
 					phone: '84242678990', 
 					schedule: {
-						days: ["11:00-18:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "", ""],
+						days: ["11:00-23:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "", ""],
 						exceptions: [
-							{date: "1557579600", type: "df"},
-							{date: "1557671400", type: "df"},
-							{date: "1557579600-12:00-19:00", type: "at"},
+							//{date: "1558270800", type: "df"},
+							{id: "1", date: "1557671400", type: "df"},
+							{id: "2", date: "1558270800-12:00-23:48", type: "at"},
+							{id: "5", date: "1548270800-12:00-19:00", type: "at"},
 						],
 					}
 				},
-
-				// {
-				// 	name: 'Мотор', 
-				// 	price: "2500", 
-				// 	phone: '84242678990', 
-				// 	schedule: {
-				// 		days: ["11:00-18:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "", ""],
-				// 		exceptions: [
-				// 			{id: "1", dayOff: "1557579600", shortenedDay: ""},
-				// 			{id: "3", dayOff: "", shortenedDay: "10:00-14:00"},
-				// 		]
-				// 	}
-				// },
 			]
 		}
+	},
+
+	components: {
+		CardCarService: () => import('@/components/CardCarService.vue'),
 	},
 
 	methods: {
@@ -110,23 +102,20 @@ export default {
 
 				if(s == 59){
 					//console.log('прошла минута')
-
-
 				}
 
 			}, 1000);
-		}
+		},
+
+
+		
 	},
 
 	created: function(){
 		document.addEventListener("DOMContentLoaded", this.globalTime);
 	},
-
-
-	components: {
-		CardCarService: () => import('@/components/CardCarService.vue'),
-	}
 }
+
 </script>
 
 <style lang="scss">

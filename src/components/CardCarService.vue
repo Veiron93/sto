@@ -13,7 +13,7 @@
 		</div>
 
 		<div class="map">
-			<img src="@/assets/img/icons/map-balloon.svg" alt="">
+			<img src="@/assets/img/icons/map-balloon.svg" alt="" title="Показать на карте">
 		</div>
 
 		<div class="time">
@@ -39,11 +39,16 @@
 				nowDate: new Date(),
 				dayOff: false,
 				anotherTime: false,
+				anotherTimeShedule: null,
 				time: ""
 			}
 		},
 
 		methods:{
+
+			// df (day off) - не рабочий день 
+			// at (another time) - другое время в определённый день 
+
 			// проверка на выходной
 			checkDayOff: function(){
 				let days = this.service.schedule.days;
@@ -60,20 +65,18 @@
 				}
 			},
 
+			// проверка есть ли исключения в режиме работы
 			exceptions: function(){
 
 				let exceptions = this.service.schedule.exceptions;
 
-				// проверка есть ли исключения в режиме работы
+				
 				if(exceptions.length > 0){
 
 					let nowDate = new Date();
 					let day = nowDate.setHours(0, 0, 0, 0) / 1000;
 					
 					exceptions.forEach( (e) => {
-
-						// df (day off) - не рабочий день 
-						// at (another time) - другое время в определённый день 
 
 						let typeExceptions = e.type;
 
@@ -88,9 +91,14 @@
 						}else if(typeExceptions == "at"){
 							
 							let anotherTimeDate = e.date.split('-')[0];	
+							
 
 							if(anotherTimeDate == day){
+
 								this.anotherTime = true;
+								this.anotherTimeShedule = e.date.split('-')[2];
+
+								//console.log(this.anotherTimeShedule)
 							}
 						}
 					});
@@ -104,13 +112,19 @@
 
 				if(days[numberDay].length != 0){
 
-					let timeClose = days[numberDay].split('-')[1].split(':');
-
 					let h = parseInt(this.nowDate.getHours() * 60);
 					let m = parseInt(this.nowDate.getMinutes());
 
+					if(this.anotherTime == true){
+						var timeClose = this.anotherTimeShedule.split(':');
+
+					}else{
+						var timeClose = days[numberDay].split('-')[1].split(':');
+					}
+
 					let closeHours = parseInt(timeClose[0] * 60);
 					let closeMinutes = parseInt(timeClose[1]);
+
 
 					let diffTime = ((closeHours + closeMinutes) - (h + m));	
 
@@ -125,12 +139,16 @@
 					}
 				}
 			},
+
+			runTimeClose: function(){
+				this.exceptions();
+				this.checkDayOff();
+				this.timeToClose();
+			}
 		},
 
 		mounted() {
-			this.exceptions();
-			this.checkDayOff();
-			this.timeToClose();
+			this.runTimeClose();
 		},
 
 		computed: {
