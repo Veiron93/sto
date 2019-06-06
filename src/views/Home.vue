@@ -32,6 +32,7 @@
 					<div class="globalTime">
 						<span class="valueTime">{{test}}</span>
 						<p @click="globalTime">запуск функции</p>
+						{{api}}
 					</div>
 
 					<div class="list-sto">
@@ -45,13 +46,15 @@
 
 <script>
 
+import axios from 'axios';
 
 export default {
-	name: 'home',
 
 	data() {
 		return{
 			test: "",
+
+			api: "",
 
 			services: [
 				{
@@ -82,6 +85,18 @@ export default {
 				},
 			]
 		}
+	},
+
+
+	mounted() {
+		axios
+			.get('http://localhost:4000/cars/car/1')
+      		.then(response => (this.api = response.data))
+      		.catch(error => {
+		        console.log(error);
+		        this.errored = true;
+		    })
+
 	},
 
 	components: {
