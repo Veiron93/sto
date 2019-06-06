@@ -26,16 +26,17 @@
 				</div>
 
 				<div class="col-xl-3">
+					{{ api }}
+					<p>{{ totalTvCount }}</p>
 					
 				</div>
 
 				<div class="col-xl-9">
 					<div class="globalTime">
 						<!--<span class="valueTime">{{test}}</span>-->
-						<pre>
-							{{ info }}
-						</pre>
 						
+						
+					
 					</div>
 
 					<div class="list-sto">
@@ -49,11 +50,7 @@
 
 <script>
 
-
-
-
 export default {
-	name: 'home',
 
 	data() {
 		return{
@@ -61,9 +58,10 @@ export default {
 
 			test2: 0,
 
-			info: null,
+			api: "",
 
 			carServices: [
+
 				{
 					name: 'ГиперАвто', 
 					price: "3500", 
@@ -106,6 +104,18 @@ export default {
 		}
 	},
 
+
+	mounted() {
+		this.$http
+			.get('http://localhost:4000/cars/car/2')
+			.then(response => (this.api = response.data))
+			.catch(error => {
+				console.log(error);
+				this.errored = true;
+			})
+
+	},
+
 	components: {
 		CardCarService: () => import('@/components/CardCarService.vue'),
 	},
@@ -129,18 +139,18 @@ export default {
 			}, 1000);
 		},
 
-
-
+		
 	},
 
-	mounted() {
-		this.$http
-		.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-		.then(response => (this.info = response));
+	computed:{
+		totalTvCount: function () {
+				return this.$store.state.totalTvCount
+			}
 	},
 
 	created: function(){
 		document.addEventListener("DOMContentLoaded", this.globalTime);
+
 	},
 }
 
