@@ -7,6 +7,7 @@
 
 <script>
 	import common from '@/resources/js/common.js';
+	
 
 	export default {
 		components: {

@@ -1,22 +1,22 @@
 <template>
 	<div class="CardCarService">
 		<div class="name">
-			<a href="">{{service.name}}</a>
+			<a href="">{{carService.name}}</a>
 		</div>
 
 		<div class="price">
-			<p>от {{service.price}} руб.</p>
+			<p>от {{carService.price}} руб.</p>
 		</div>
 
 		<div class="phone">
-			<a href="tel:">{{service.phone}}</a>
+			<a href="tel:">{{carService.phone}}</a>
 		</div>
 
 		<div class="map">
 			<img src="@/assets/img/icons/map-balloon.svg" alt="" title="Показать на карте">
 		</div>
 
-		<div class="time">
+		<div :class="{ close: dayOff }" class="time">
 			<p>
 				{{(dayOff)? 'закрыто' : 'до закрытия: ' + time}}
 			</p>
@@ -29,18 +29,24 @@
 		name: 'CardCarService',
 
 		props: {
-			service:{
+			carService:{
 				//type: Object
-			} 
+			},
+
+			test2:{
+
+			}
+
 		},
 
 		data() {
 			return{
-				nowDate: new Date(),
+				nowDate: "",
 				dayOff: false,
 				anotherTime: false,
 				anotherTimeShedule: null,
-				time: ""
+				time: "",
+				//test2: "1"
 			}
 		},
 
@@ -51,7 +57,7 @@
 
 			// проверка на выходной
 			checkDayOff: function(){
-				let days = this.service.schedule.days;
+				let days = this.carService.schedule.days;
 	
 				if(this.dayOff != true){
 
@@ -68,7 +74,7 @@
 			// проверка есть ли исключения в режиме работы
 			exceptions: function(){
 
-				let exceptions = this.service.schedule.exceptions;
+				let exceptions = this.carService.schedule.exceptions;
 
 				
 				if(exceptions.length > 0){
@@ -106,7 +112,7 @@
 			},
 
 			timeToClose: function(){
-				let days = this.service.schedule.days;
+				let days = this.carService.schedule.days;
 				let day = this.nowDate.getDay();
 				let numberDay = (day == 0)? 6 : day - 1;
 
@@ -133,7 +139,7 @@
 						closeHours = Math.floor(diffTime / 60 % 24);
 						closeMinutes = Math.floor(diffTime % 60);
 
-						this.time = `${(Math.floor(diffTime % 60) < 10)? '0': ''}${closeHours}:${(Math.floor(closeMinutes % 60) < 10)? '0': ''}${closeMinutes}`;
+						this.time = `${(Math.floor(closeHours % 60) < 10)? '0': ''}${closeHours}:${(Math.floor(closeMinutes % 60) < 10)? '0': ''}${closeMinutes}`;
 					}else{
 						this.dayOff = true;
 					}
@@ -141,24 +147,34 @@
 			},
 
 			runTimeClose: function(){
+				this.nowDate = new Date();
+
 				this.exceptions();
 				this.checkDayOff();
 				this.timeToClose();
-			}
+
+				//this.nowDate = new Date();
+			},
+
 		},
 
 		mounted() {
-			this.runTimeClose();
+			//this.runTimeClose();
+		},
+
+		watch: {
+			test2: {
+				handler: 'runTimeClose',
+				immediate: true
+			},
 		},
 
 		computed: {
-
+			
 		},
 
-		
-
 		created: function(){
-
+			//console.log('опа')
 		},
 	}
 </script>
@@ -168,48 +184,48 @@
 		//border: 1px solid red;
 		height: 40px;
 		border-radius: 4px;
-  		border-radius: 4px;
-  		box-shadow: 0px 1px 3.8px 0.2px rgba(0, 0, 0, 0.2);
-  		background: #fff;
+		border-radius: 4px;
+		box-shadow: 0px 1px 3.8px 0.2px rgba(0, 0, 0, 0.2);
+		background: #fff;
 
-  		display: flex;
-  		align-items: center;
-  		justify-content: space-between;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 
-  		margin-bottom: 15px;
-  		padding: 0px 10px;
+		margin-bottom: 15px;
+		padding: 0px 10px;
 
-  		&:last-child{
-  			margin-bottom: 0;
-  		}
+		&:last-child{
+			margin-bottom: 0;
+		}
 
-  		.name, .price, .phone,{
-  			p, a{
-  				color: #484848;
-  			}
-  		}
+		.name, .price, .phone, .time{
+			p, a{
+				color: #484848;
+			}
+		}
 
-  		.name, .phone{
+		.name, .phone{
 			a{
 				text-decoration: none;
 			}
 		}
 
-  		.price, .time{
-  			p{
-  				margin: 0;
-  			}
-  		}
+		.price, .time{
+			p{
+				margin: 0;
+			}
+		}
 
-  		.name{
-  			border: 1px solid ;
-  			width: 30%;
+		.name{
+			border: 1px solid ;
+			width: 30%;
 
-  			a{
-  				font-weight: bold;
-  				font-size: 16px;
-  			}
-  		}
+			a{
+				font-weight: bold;
+				font-size: 16px;
+			}
+		}
 
 		.price{
 			border: 1px solid red;
@@ -220,7 +236,7 @@
 		}
 
 		.phone{
-			border: 1px solid red;
+			//border: 1px solid red;
 			width: 140px;
 		}
 
@@ -234,12 +250,24 @@
 		}
 
 		.time{
-			border: 1px solid red;
 			width: 150px;
+			margin-left: 10px;
 			
 			p{
 				text-transform: uppercase;
 				font-size: 14px;
+				//color: green;
+			}
+
+			&.close{
+				background: #e24444;
+				border-radius: 4px;
+				text-align: center;
+				padding: 4px;
+
+				p{
+					color: #fff;
+				}
 			}
 		}
 	}

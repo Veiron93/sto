@@ -7,3 +7,52 @@ body{
 .list-sto{
 	//border: 1px solid;
 }
+
+
+.block-sorting{
+	margin-top: 30px;
+	border-radius: 4px;
+	padding: 3px;
+	background: $accent;
+	box-shadow: 0px 5px 13.92px 2.08px rgba(17, 127, 212, 0.35);
+
+	display: flex;
+	align-items: center;
+
+	select{
+		appearance: none;
+		height: 40px;
+		border-radius: 4px;
+		padding: 0px 20px;
+		border: none;
+		color: #5e5e5e;
+		cursor: pointer;
+		margin-right: 10px;
+
+		option{
+			padding: 10px;
+		}
+
+		&:last-child{
+			margin-right: 0;
+		}
+	}
+}
+
+
+.name-service{
+	margin-top: 20px;
+	h2, h3{
+		color: #ababab;
+		margin: 0;
+	}
+
+	h2{
+		font-size: 30px;
+		margin-bottom: 8px;
+	}
+
+	h3{
+		font-size: 16px;
+	}
+}

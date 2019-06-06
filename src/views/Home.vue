@@ -5,14 +5,15 @@
 				<div class="col-12">
 					<div class="block-sorting">
 						<select name="" id="">
-							<option value="">Плановое ТО</option>
-							<option value="">Кузовной ремон</option>
-							<option value="">Электрика</option>
+							<option v-for="category in categoriesServices" v-bind:value="category.id">
+								{{ category.name }}
+							</option>
 						</select>
 
 						<select name="" id="">
-							<option value="">Замена масла</option>
-							<option value="">Замена АТФ</option>
+							<option v-for="service in services" v-if="service.id_category == 3" v-bind:value="service.id_category">
+								{{ service.name }}
+							</option>
 						</select>
 					</div>
 				</div>
@@ -30,12 +31,15 @@
 
 				<div class="col-xl-9">
 					<div class="globalTime">
-						<span class="valueTime">{{test}}</span>
-						<p @click="globalTime">запуск функции</p>
+						<!--<span class="valueTime">{{test}}</span>-->
+						<pre>
+							{{ info }}
+						</pre>
+						
 					</div>
 
 					<div class="list-sto">
-						<CardCarService :service="service" v-for="service in services"/>	
+						<CardCarService :test2="test2" :carService="carService" v-for="carService in carServices"/>	
 					</div>
 				</div>
 			</div>
@@ -46,6 +50,8 @@
 <script>
 
 
+
+
 export default {
 	name: 'home',
 
@@ -53,13 +59,17 @@ export default {
 		return{
 			test: "",
 
-			services: [
+			test2: 0,
+
+			info: null,
+
+			carServices: [
 				{
 					name: 'ГиперАвто', 
 					price: "3500", 
 					phone: '89146565789', 
 					schedule: {
-						days: ["10:00-18:00", "10:00-18:00", "10:00-18:00", "10:00-22:00", "10:00-18:00", "", "10:00-22:00"],
+						days: ["10:00-18:00", "10:00-22:28", "10:00-18:00", "10:00-22:00", "10:00-18:00", "", "10:00-22:00"],
 						exceptions: [
 							{id: "7", date: "1557579600-10:00-14:00", type: "at"}
 						],
@@ -71,7 +81,7 @@ export default {
 					price: "2500", 
 					phone: '84242678990', 
 					schedule: {
-						days: ["11:00-23:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "11:00-18:00", "", ""],
+						days: ["11:00-23:00", "11:00-22:25", "11:00-24:00", "11:00-18:00", "11:00-18:00", "", ""],
 						exceptions: [
 							//{date: "1558270800", type: "df"},
 							{id: "1", date: "1557671400", type: "df"},
@@ -80,7 +90,19 @@ export default {
 						],
 					}
 				},
-			]
+			],
+
+			categoriesServices: [
+				{id: "1", name: "Платонове ТО"}, 
+				{id: "3", name: "Кузовной ремон"},
+			],
+
+			services: [
+				{id_category: "1", name: "Замена моторного масла"}, 
+				{id_category: "1", name: "Замена ATF"}, 
+				{id_category: "1", name: "Замена маслянного фильтра"}, 
+				{id_category: "3", name: "Полировка"},
+			],
 		}
 	},
 
@@ -98,17 +120,23 @@ export default {
 				var m = d.getMinutes();
 				var h = d.getHours();
 
-				this.test = h + ":" + m + ":" + s;
+				//this.test = h + ":" + m + ":" + s;
 
-				if(s == 59){
-					//console.log('прошла минута')
+				if(s == 0){
+					this.test2 += 1;
 				}
 
 			}, 1000);
 		},
 
 
-		
+
+	},
+
+	mounted() {
+		this.$http
+		.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+		.then(response => (this.info = response));
 	},
 
 	created: function(){
@@ -119,29 +147,5 @@ export default {
 </script>
 
 <style lang="scss">
-	.block-sorting{
-		margin-top: 30px;
-		border-radius: 4px;
-		height: 50px;
-		background: $accent;
-		box-shadow: 0px 5px 13.92px 2.08px rgba(17, 127, 212, 0.35);
-	}
-
-
-	.name-service{
-		margin-top: 20px;
-		h2, h3{
-			color: #ababab;
-			margin: 0;
-		}
-
-		h2{
-			font-size: 30px;
-			margin-bottom: 8px;
-		}
-
-		h3{
-			font-size: 16px;
-		}
-	}
+	
 </style>
