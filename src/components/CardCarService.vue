@@ -35,10 +35,9 @@
 				//type: Object
 			},
 
-			test2:{
+			globalTime:{
 
 			}
-
 		},
 
 		data() {
@@ -47,8 +46,7 @@
 				dayOff: false,
 				anotherTime: false,
 				anotherTimeShedule: null,
-				time: "",
-				//test2: "1"
+				time: ""
 			}
 		},
 
@@ -105,8 +103,6 @@
 
 								this.anotherTime = true;
 								this.anotherTimeShedule = e.date.split('-')[2];
-
-								//console.log(this.anotherTimeShedule)
 							}
 						}
 					});
@@ -154,18 +150,16 @@
 				this.exceptions();
 				this.checkDayOff();
 				this.timeToClose();
-
-				//this.nowDate = new Date();
 			},
 
 		},
 
 		mounted() {
-			//this.runTimeClose();
+			
 		},
 
 		watch: {
-			test2: {
+			globalTime: {
 				handler: 'runTimeClose',
 				immediate: true
 			},
@@ -176,7 +170,7 @@
 		},
 
 		created: function(){
-			//console.log('опа')
+			
 		},
 	}
 </script>

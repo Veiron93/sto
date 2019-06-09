@@ -18,7 +18,7 @@
 					</div>
 				</div>
 
-				<div class="col-12">
+				<div class="col-12" style="display: none">
 					<div class="name-service">
 						<h2>Замена тормозных дисков</h2>
 						<h3>Найдено СТО: 13</h3>
@@ -26,21 +26,24 @@
 				</div>
 
 				<div class="col-xl-3">
-					{{ api }}
-					<p>{{ totalTvCount }}</p>
-					
+					{{servicesTest}}
 				</div>
 
 				<div class="col-xl-9">
-					<div class="globalTime">
-						<!--<span class="valueTime">{{test}}</span>-->
-						
-						
 					
+					<div class="topServices">
+						<div class="topServices-heading">
+							<p>Популярные услуги</p>
+						</div>
+						
+						<div class="topServices-list">
+							<CardService :service="service" v-for="service in topServices"/>
+						</div>
 					</div>
 
-					<div class="list-sto">
-						<CardCarService :test2="test2" :carService="carService" v-for="carService in carServices"/>	
+
+					<div class="list-sto" style="display: none">
+						<CardCarService :globalTime="globalTime" :carService="carService" v-for="carService in carServices"/>	
 					</div>
 				</div>
 			</div>
@@ -54,11 +57,8 @@ export default {
 
 	data() {
 		return{
-			test: "",
-
-			test2: 0,
-
-			api: "",
+			globalTime: 0,
+			servicesTest: "",
 
 			carServices: [
 
@@ -67,9 +67,9 @@ export default {
 					price: "3500", 
 					phone: '89146565789', 
 					schedule: {
-						days: ["10:00-18:00", "10:00-22:28", "10:00-18:00", "10:00-22:00", "10:00-18:00", "", "10:00-22:00"],
+						days: ["10:00-18:00", "10:00-22:28", "10:00-18:00", "10:00-22:00", "10:00-18:00", "10:00-18:00", "10:00-22:00"],
 						exceptions: [
-							{id: "7", date: "1557579600-10:00-14:00", type: "at"}
+							{date: "1557579600-10:00-14:00", type: "at"}
 						],
 					}
 				},
@@ -81,10 +81,9 @@ export default {
 					schedule: {
 						days: ["11:00-23:00", "11:00-22:25", "11:00-24:00", "11:00-18:00", "11:00-18:00", "", ""],
 						exceptions: [
-							//{date: "1558270800", type: "df"},
-							{id: "1", date: "1557671400", type: "df"},
-							{id: "2", date: "1558270800-12:00-23:48", type: "at"},
-							{id: "5", date: "1548270800-12:00-19:00", type: "at"},
+							{date: "1557671400", type: "df"},
+							{date: "1558270800-12:00-23:48", type: "at"},
+							{date: "1548270800-12:00-19:00", type: "at"},
 						],
 					}
 				},
@@ -107,50 +106,41 @@ export default {
 
 	mounted() {
 		this.$http
-			.get('http://localhost:4000/cars/car/2')
-			.then(response => (this.api = response.data))
+			.get('http://localhost:4000/services/all')
+			.then(response => (this.servicesTest = response.data))
 			.catch(error => {
 				console.log(error);
 				this.errored = true;
 			})
-
 	},
 
 	components: {
 		CardCarService: () => import('@/components/CardCarService.vue'),
+		CardService: () => import('@/components/CardService.vue'),
 	},
 
 	methods: {
-		globalTime: function () {
-			//console.log(111)
-
+		realTime: function () {
 			setInterval(() => {
 				var d = new Date();
 				var s = d.getSeconds();
 				var m = d.getMinutes();
 				var h = d.getHours();
 
-				//this.test = h + ":" + m + ":" + s;
-
 				if(s == 0){
-					this.test2 += 1;
+					this.globalTime += 1;
 				}
 
 			}, 1000);
 		},
-
-		
 	},
 
 	computed:{
-		totalTvCount: function () {
-				return this.$store.state.totalTvCount
-			}
+		
 	},
 
 	created: function(){
-		document.addEventListener("DOMContentLoaded", this.globalTime);
-
+		document.addEventListener("DOMContentLoaded", this.realTime);
 	},
 }
 
