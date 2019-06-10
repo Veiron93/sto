@@ -4,14 +4,17 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="block-sorting">
+						<v-select :categoriesServices="categoriesServices" outline/>
+						<!--
 						<select name="" id="">
 							<option v-for="category in categoriesServices" v-bind:value="category.id">
 								{{ category.name }}
 							</option>
 						</select>
+					-->
 
 						<select name="" id="">
-							<option v-for="service in services" v-if="service.id_category == 3" v-bind:value="service.id_category">
+							<option v-for="service in services" v-bind:value="service.id">
 								{{ service.name }}
 							</option>
 						</select>
@@ -26,7 +29,7 @@
 				</div>
 
 				<div class="col-xl-3">
-					{{servicesTest}}
+					<!---->{{services}}
 				</div>
 
 				<div class="col-xl-9">
@@ -35,10 +38,11 @@
 						<div class="topServices-heading">
 							<p>Популярные услуги</p>
 						</div>
-						
+						<!--
 						<div class="topServices-list">
 							<CardService :service="service" v-for="service in topServices"/>
 						</div>
+					-->
 					</div>
 
 
@@ -58,7 +62,8 @@ export default {
 	data() {
 		return{
 			globalTime: 0,
-			servicesTest: "",
+			services: "",
+			categoriesServices: "",
 
 			carServices: [
 
@@ -89,17 +94,14 @@ export default {
 				},
 			],
 
-			categoriesServices: [
-				{id: "1", name: "Платонове ТО"}, 
-				{id: "3", name: "Кузовной ремон"},
-			],
+			
 
-			services: [
-				{id_category: "1", name: "Замена моторного масла"}, 
-				{id_category: "1", name: "Замена ATF"}, 
-				{id_category: "1", name: "Замена маслянного фильтра"}, 
-				{id_category: "3", name: "Полировка"},
-			],
+			// services: [
+			// 	{id_category: "1", name: "Замена моторного масла"}, 
+			// 	{id_category: "1", name: "Замена ATF"}, 
+			// 	{id_category: "1", name: "Замена маслянного фильтра"}, 
+			// 	{id_category: "3", name: "Полировка"},
+			// ],
 		}
 	},
 
@@ -107,7 +109,15 @@ export default {
 	mounted() {
 		this.$http
 			.get('http://localhost:4000/services/all')
-			.then(response => (this.servicesTest = response.data))
+			.then(response => (this.services = response.data))
+			.catch(error => {
+				console.log(error);
+				this.errored = true;
+			})
+
+		this.$http
+			.get('http://localhost:4000/services/categories/all')
+			.then(response => (this.categoriesServices = response.data))
 			.catch(error => {
 				console.log(error);
 				this.errored = true;
