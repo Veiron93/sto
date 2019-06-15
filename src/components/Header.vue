@@ -74,7 +74,7 @@
 <style lang="scss">
 	header{
 		width: 100%;
-		max-width: 1140px;
+		max-width: 1170px;
 		padding: 0px 15px;
 		margin: 0px auto;
 		border: 1px solid;
@@ -110,6 +110,7 @@
 			align-items: center;
 			justify-content: center;
 			cursor: pointer;
+			margin-right: -10px;
 
 			img{
 				width: 20px;

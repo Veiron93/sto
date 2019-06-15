@@ -180,7 +180,6 @@
 		//border: 1px solid red;
 		height: 40px;
 		border-radius: 4px;
-		border-radius: 4px;
 		box-shadow: 0px 1px 3.8px 0.2px rgba(0, 0, 0, 0.2);
 		background: #fff;
 

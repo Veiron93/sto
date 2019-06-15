@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
-		<Header />
-		<router-view/>
+		<v-app>
+			<Header />
+			<router-view/>
+		</v-app>
 	</div>
 </template>
 
@@ -21,9 +23,8 @@
 </script>
 
 <style lang="scss">
-  @import "~../node_modules/normalize.css/normalize.css";
-  @import "~../node_modules/bootstrap/scss/bootstrap-grid.scss";
-  @import "~../node_modules/@fortawesome/fontawesome-free/css/all.css";
+  //@import "~../node_modules/normalize.css/normalize.css";
+  //@import "~../node_modules/bootstrap/scss/bootstrap-grid.scss";
   @import "~../node_modules/animate.css/animate.min.css";
   @import "~../node_modules/vuetify/dist/vuetify.min.css";
   @import "/resources/sass/main.scss";

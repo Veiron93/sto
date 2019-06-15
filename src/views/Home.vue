@@ -1,57 +1,68 @@
 <template>
 	<div class="home">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
+
+		<v-container>
+			<v-layout row wrap>
+				<v-flex xs12>
 					<div class="block-sorting">
-						<v-select :categoriesServices="categoriesServices" outline/>
-						<!--
-						<select name="" id="">
-							<option v-for="category in categoriesServices" v-bind:value="category.id">
-								{{ category.name }}
-							</option>
-						</select>
-					-->
+						<v-autocomplete 
+							v-model="selectCategoryService" 
+							:items="categoriesServices"  
+							item-text="name"
+							item-value="id"
+							label="Категория"
+							outline/>
 
-						<select name="" id="">
-							<option v-for="service in services" v-bind:value="service.id">
-								{{ service.name }}
-							</option>
-						</select>
+						<v-autocomplete 
+							v-model="selectService" 
+							:items="sortingServices"  
+							item-text="name"
+							item-value="id"
+							label="Услуга"
+							no-data-text="В данной категории пока нет услуг 😱"
+
+							:disabled="stateSelectService"
+							outline/>
 					</div>
-				</div>
+				</v-flex>
 
-				<div class="col-12" style="display: none">
-					<div class="name-service">
+				<v-flex xs12 style="display: none">
+				  <div class="name-service">
 						<h2>Замена тормозных дисков</h2>
 						<h3>Найдено СТО: 13</h3>
 					</div>
-				</div>
+				</v-flex>
+			</v-layout>
 
-				<div class="col-xl-3">
-					<!---->{{services}}
-				</div>
+			<v-layout row wrap>
 
-				<div class="col-xl-9">
-					
-					<div class="topServices">
-						<div class="topServices-heading">
-							<p>Популярные услуги</p>
+				<v-flex xs12 sm3 md3>
+					<div class="left-side__index">
+						<div class="links" v-on:click="showSections" v-show="!showTopServices">
+							<p>🔥 Популярные услуги</p>
 						</div>
-						<!--
-						<div class="topServices-list">
-							<CardService :service="service" v-for="service in topServices"/>
-						</div>
-					-->
 					</div>
+				</v-flex>
+
+			  
+				<v-flex>
+					<div class="topServices" v-show="showTopServices">
+						<div class="topServices-heading">
+							<p>🔥 Популярные услуги за неделю</p>
+						</div>
+							
+						<div class="topServices-list">
+							<CardService :top-service="topService" v-for="topService in getTopServices"/>
+						</div>
+					</div>			
 
 
-					<div class="list-sto" style="display: none">
+					<div class="list-sto"  v-show="showListCarServices">
 						<CardCarService :globalTime="globalTime" :carService="carService" v-for="carService in carServices"/>	
 					</div>
-				</div>
-			</div>
-		</div>
+				</v-flex>
+			</v-layout>
+		</v-container>
 	</div>
 </template>
 
@@ -61,9 +72,14 @@ export default {
 
 	data() {
 		return{
+			showTopServices: true,
+			showListCarServices: false,
 			globalTime: 0,
-			services: "",
-			categoriesServices: "",
+			selectService: null,
+			services: null,
+			stateSelectService: true,
+			selectCategoryService: null,
+			categoriesServices: null,
 
 			carServices: [
 
@@ -93,15 +109,6 @@ export default {
 					}
 				},
 			],
-
-			
-
-			// services: [
-			// 	{id_category: "1", name: "Замена моторного масла"}, 
-			// 	{id_category: "1", name: "Замена ATF"}, 
-			// 	{id_category: "1", name: "Замена маслянного фильтра"}, 
-			// 	{id_category: "3", name: "Полировка"},
-			// ],
 		}
 	},
 
@@ -143,9 +150,68 @@ export default {
 
 			}, 1000);
 		},
+
+		showSections: function(){
+			if(this.showTopServices == true){
+				this.showTopServices = false;
+				this.showListCarServices = true;
+			}else{
+				this.showTopServices = true;
+				this.showListCarServices = false;
+			}
+		}
 	},
 
 	computed:{
+		sortingServices: function () {
+
+			if(this.services != null){
+
+				let idCategoryServices = this.selectCategoryService;
+				let arr = [];
+
+				this.services.forEach(function(e){
+					if(e.id_category == idCategoryServices){
+						return arr.push(e);
+					}				
+				})
+
+				if(arr.length > 0){
+					this.stateSelectService = false;
+				}
+
+				return arr;
+			}	
+		},
+
+		getTopServices: function(){
+
+			if(this.services != null){
+
+				let services = this.services;
+
+				const filteredServices = services.filter(service => service.countViewWeek != 0);
+
+				filteredServices.sort(function(a, b){
+					return b.countViewWeek-a.countViewWeek
+				})
+
+				filteredServices.splice(15);
+
+				return filteredServices;
+			}
+		}
+	},
+
+	watch:{
+
+		selectService: function () {
+
+			if(this.showTopServices == true){
+				this.showTopServices = false;
+				this.showListCarServices = true;
+			}
+		}
 		
 	},
 
@@ -155,7 +221,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss">
-	
-</style>
