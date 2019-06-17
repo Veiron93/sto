@@ -8,11 +8,12 @@
 			</div>
 
 			<div class="cities">
-				<select>
-					<option v-for="city in cities" v-bind:value="city.code">
-						{{ city.name }}
-					</option>
-				</select> 
+				<v-select 
+					v-model="selectCity" 
+					:items="cities"  
+					item-text="name"
+					item-value="code"
+					/>
 			</div>
 		</div>
 
@@ -51,14 +52,20 @@
 
 		data() {
 			return{
-				cities: [
-					{name: 'Южно-Сахалинск', code: 'ys'},
-					{name: 'Долинск', code: 'dolinsk'},
-					{name: 'Корсаков', code: 'korsakov'},
-				],
-
+				selectCity: null,
+				cities: [],
 				stateMenu: false
 			}
+		},
+
+		mounted() {
+			this.$http
+				.get('http://localhost:4000/cities/all')
+				.then(response => (this.cities = response.data))
+				.catch(error => {
+					console.log(error);
+					this.errored = true;
+				})
 		},
 
 		methods:{
@@ -97,6 +104,36 @@
 						display: block;
 					}
 				}
+			}
+
+			.cities{
+				//border: 1px solid;
+
+				.v-select{
+					padding-top: 0px;
+					max-width: 200px;
+					
+					.v-input__control{
+
+					}
+
+					.v-input__slot{
+						margin-bottom: 0;
+
+						&:before, &:after{
+							display: none;
+						}
+
+						.v-select__selections{
+							padding-top: 0;
+						}
+					}
+					.v-text-field__details{
+						display: none;
+					}
+				}
+
+				
 			}	
 		}
 
