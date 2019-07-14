@@ -21,20 +21,29 @@ body{
 	align-items: center;
 
 	.v-select{
-		margin-right: 30px;
+		//height: 50px;
+		min-width: 200px;
+		width: 100%;
+		margin-right: 20px;
+		
+
+		.vs__dropdown-toggle{
+			background: #fff;
+			padding: 8px 5px;
+			//border: none;
+
+			input{
+				background: none;
+				&::-webkit-input-placeholder{
+					color: #ADADAD
+				}
+
+			}
+
+		}
 
 		&:last-child{
 			margin-right: 0;
-		}
-
-		.v-input__slot{
-			margin-bottom: 0;
-			background: #fff !important;
-			border: none !important;
-		}
-
-		.v-text-field__details{
-			display: none;
 		}
 	}
 }
@@ -58,6 +67,7 @@ body{
 }
 
 
+
 .topServices{
 	.topServices-heading{
 
@@ -73,6 +83,8 @@ body{
 }
 
 .left-side__index{
+	border: 1px solid red;
+	height: 100%;
 	.links{
 		p{
 			font-weight: bold;

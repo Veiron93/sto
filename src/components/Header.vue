@@ -7,14 +7,7 @@
 				</a>
 			</div>
 
-			<div class="cities">
-				<v-select 
-					v-model="selectCity" 
-					:items="cities"  
-					item-text="name"
-					item-value="code"
-					/>
-			</div>
+			<v-select v-model="selected" :clearable="clearable" :placeholder="placeholder" class="cities" label="name" :options="cities" ></v-select>
 		</div>
 
 		<div class="rigth-section">
@@ -28,13 +21,13 @@
 		</div>
 
 		<transition>
-		    <div class="right-menu" v-show="stateMenu">
+			<div class="right-menu" v-show="stateMenu">
 
-		    	<div class="topSection">
-		    		<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
+				<div class="topSection">
+					<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
 						<img src="@/assets/img/icons/close-menu.svg" alt="">
 					</div>
-		    	</div>
+				</div>
 
 				<nav>
 					<router-link to="/services">Сервисам</router-link>
@@ -47,6 +40,8 @@
 </template>
 
 <script>
+	
+
 	export default {
 		name: 'Header',
 
@@ -54,7 +49,10 @@
 			return{
 				selectCity: null,
 				cities: [],
-				stateMenu: false
+				stateMenu: false,
+				selected: null,
+				placeholder: "Выберите город",
+				clearable: false
 			}
 		},
 
@@ -62,18 +60,24 @@
 			this.$http
 				.get('http://localhost:4000/cities/all')
 				.then(response => (this.cities = response.data))
-				.catch(error => {
-					console.log(error);
+				.catch(() => {
+					//console.log(error);
 					this.errored = true;
-				})
+				});
 		},
 
 		methods:{
 			rightMenu: function(){
-				console.log(111);
+				//console.log(111);
 
 				//this.stateMenu = (this.stateMenu == false)? true: false;
 			}
+		},
+
+		watch:{
+			// selected: function () {
+			// 	console.log(this.selected.name)
+			// }
 		}
 	}
 </script>
@@ -81,7 +85,7 @@
 <style lang="scss">
 	header{
 		width: 100%;
-		max-width: 1170px;
+		max-width: 1140px;
 		padding: 0px 15px;
 		margin: 0px auto;
 		border: 1px solid;
@@ -108,31 +112,23 @@
 
 			.cities{
 				//border: 1px solid;
+				width: 100%;
+				min-width: 204px;	
+				background: #fff;	
+				.vs__dropdown-toggle{
+					//border: none;
 
-				.v-select{
-					padding-top: 0px;
-					max-width: 200px;
-					
-					.v-input__control{
-
+					.vs__selected{
+						//padding: 0;
 					}
 
-					.v-input__slot{
-						margin-bottom: 0;
-
-						&:before, &:after{
-							display: none;
+					input{
+						&::-webkit-input-placeholder{
+							color: #ADADAD
 						}
-
-						.v-select__selections{
-							padding-top: 0;
-						}
-					}
-					.v-text-field__details{
-						display: none;
+		
 					}
 				}
-
 				
 			}	
 		}

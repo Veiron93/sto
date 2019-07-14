@@ -1,14 +1,12 @@
 import Vue from 'vue'
-import Vuetify from 'vuetify'
+//import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
 import {store} from './store/store'
 import axios from 'axios'
-
-
-
-Vue.use(Vuetify)
-
+import vSelect from 'vue-select'
+//Vue.use(Vuetify)
+Vue.component('v-select', vSelect)
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 

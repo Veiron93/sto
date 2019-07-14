@@ -1,68 +1,88 @@
 <template>
 	<div class="home">
 
-		<v-container>
-			<v-layout row wrap>
-				<v-flex xs12>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					
 					<div class="block-sorting">
-						<v-autocomplete 
+						<v-select 
 							v-model="selectCategoryService" 
-							:items="categoriesServices"  
-							item-text="name"
-							item-value="id"
-							label="Категория"
-							outline/>
+							label="name"
+							:clearable="optionSelectCategoryService.clearable" 
+							:placeholder="optionSelectCategoryService.placeholder" 
+							:options="categoriesServices">
+						</v-select>
+
+						<v-select 
+							v-model="selectService" 
+							label="name"
+							:disabled="optionSelectSortingService.disabled" 
+							:clearable="optionSelectSortingService.clearable" 
+							:placeholder="optionSelectSortingService.placeholder" 
+							:value="optionSelectSortingService.value"
+							:options="sortingServices">
+							<div slot="no-options">В данной категории пока нет услуг 😱</div>
+						</v-select>
+
+						<!--
+						<v-autocomplete 
+						v-model="selectCategoryService" 
+						:items="categoriesServices"  
+						item-text="name"
+						item-value="id"
+						label="Категория"
+						outline/>
 
 						<v-autocomplete 
-							v-model="selectService" 
-							:items="sortingServices"  
-							item-text="name"
-							item-value="id"
-							label="Услуга"
-							no-data-text="В данной категории пока нет услуг 😱"
+						v-model="selectService" 
+						:items="sortingServices"  
+						item-text="name"
+						item-value="id"
+						label="Услуга"
+						no-data-text="В данной категории пока нет услуг 😱"
 
-							:disabled="stateSelectService"
-							outline/>
+						:disabled="stateSelectService"
+						outline/>
+						-->
 					</div>
-				</v-flex>
+				
+				</div>
+			</div>
+		</div>
 
-				<v-flex xs12 style="display: none">
-				  <div class="name-service">
-						<h2>Замена тормозных дисков</h2>
-						<h3>Найдено СТО: 13</h3>
-					</div>
-				</v-flex>
-			</v-layout>
-
-			<v-layout row wrap>
-
-				<v-flex xs12 sm3 md3>
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-3">
 					<div class="left-side__index">
 						<div class="links" v-on:click="showSections" v-show="!showTopServices">
 							<p>🔥 Популярные услуги</p>
 						</div>
 					</div>
-				</v-flex>
+				</div>
 
-			  
-				<v-flex>
+				<div class="col-xl-9">
+					<div class="name-service" style="display: none;">
+						<h2>Замена тормозных дисков</h2>
+						<h3>Найдено СТО: 13</h3>
+					</div>
+
 					<div class="topServices" v-show="showTopServices">
 						<div class="topServices-heading">
 							<p>🔥 Популярные услуги за неделю</p>
 						</div>
-							
-						<div class="topServices-list">
-							<CardService :top-service="topService" v-for="topService in getTopServices"/>
-						</div>
-					</div>			
 
+						<div class="topServices-list">
+							<CardService :top-service="topService" v-for="topService in getTopServices" :value="topService.value" :key="topService.value"/>
+						</div>
+					</div>
 
 					<div class="list-sto"  v-show="showListCarServices">
-						<CardCarService :globalTime="globalTime" :carService="carService" v-for="carService in carServices"/>	
+						<CardCarService :globalTime="globalTime" :carService="carService" v-for="carService in carServices" :value="carService.value" :key="carService.value"/>	
 					</div>
-				</v-flex>
-			</v-layout>
-		</v-container>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -74,12 +94,27 @@ export default {
 		return{
 			showTopServices: true,
 			showListCarServices: false,
+
 			globalTime: 0,
+			
 			selectService: null,
 			services: null,
-			stateSelectService: true,
+			
 			selectCategoryService: null,
-			categoriesServices: null,
+			categoriesServices: [],
+
+			optionSelectCategoryService: {
+				placeholder: "Выберите категорию",
+				clearable: false,
+			},
+
+			optionSelectSortingService: {
+				placeholder: "Выберите услугу",
+				clearable: false,
+				disabled: true,
+				value: null
+			},
+			
 
 			carServices: [
 
@@ -117,18 +152,16 @@ export default {
 		this.$http
 			.get('http://localhost:4000/services/all')
 			.then(response => (this.services = response.data))
-			.catch(error => {
-				console.log(error);
+			.catch(() => {
 				this.errored = true;
-			})
+			});
 
 		this.$http
 			.get('http://localhost:4000/services/categories/all')
 			.then(response => (this.categoriesServices = response.data))
-			.catch(error => {
-				console.log(error);
+			.catch(() => {
 				this.errored = true;
-			})
+			});	
 	},
 
 	components: {
@@ -141,8 +174,8 @@ export default {
 			setInterval(() => {
 				var d = new Date();
 				var s = d.getSeconds();
-				var m = d.getMinutes();
-				var h = d.getHours();
+				//var m = d.getMinutes();
+				//var h = d.getHours();
 
 				if(s == 0){
 					this.globalTime += 1;
@@ -165,9 +198,9 @@ export default {
 	computed:{
 		sortingServices: function () {
 
-			if(this.services != null){
+			if(this.selectCategoryService != null ){
 
-				let idCategoryServices = this.selectCategoryService;
+				let idCategoryServices = this.selectCategoryService.id;
 				let arr = [];
 
 				this.services.forEach(function(e){
@@ -177,14 +210,16 @@ export default {
 				})
 
 				if(arr.length > 0){
-					this.stateSelectService = false;
+					this.optionSelectSortingService.disabled = false;
 				}
 
 				return arr;
-			}	
+			}
+				
+			return [];
 		},
 
-		getTopServices: function(){
+		getTopServices: function (){
 
 			if(this.services != null){
 
@@ -200,6 +235,8 @@ export default {
 
 				return filteredServices;
 			}
+			
+			return null;
 		}
 	},
 
@@ -211,6 +248,11 @@ export default {
 				this.showTopServices = false;
 				this.showListCarServices = true;
 			}
+		},
+
+		selectCategoryService: function () {
+
+			//console.log(this.selectCategoryService.id)
 		}
 		
 	},
