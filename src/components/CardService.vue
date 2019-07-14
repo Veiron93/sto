@@ -8,7 +8,6 @@
 			</div>
 
 			<div class="views" title="Просмотры за неделю">
-				<!--<img src="@/assets/img/icons/eye.svg" alt="">-->
 				<p>{{topService.countViewWeek}}</p>
 			</div>
 		</div>
@@ -48,10 +47,10 @@
 		//border: 1px solid;
 		
 		border-radius: 4px;
-		margin-bottom: 20px;
+		margin-bottom: 16px;
 		box-shadow: 0px 1px 3.8px 0.2px rgba(0, 0, 0, 0.2);
 		background: #fff;
-		padding: 5px 10px;
+		padding: 8px 10px;
 
 		.description{
 			display: flex;
@@ -76,8 +75,8 @@
 					height: 16px;
 				}
 				p{
+					margin: 0;
 					margin-left: 5px;
-					margin-bottom: 0;
 					color: #484848;
 					font-size: 14px;
 				}
@@ -96,7 +95,5 @@
 				color: #1F9FD4;
 			}
 		}
-
-		
 	}
 </style>
