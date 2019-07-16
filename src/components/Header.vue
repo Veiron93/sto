@@ -1,6 +1,5 @@
 <template>
 	<header>
-
 		<div class="header-wrapper">
 			<div class="left-section">
 				<div class="logo">
@@ -18,21 +17,14 @@
 				</div>
 
 				<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
-					<img src="@/assets/img/icons/menu.svg" alt="">
+					<img v-if="!stateMenu" src="@/assets/img/icons/menu.svg" alt="">
+					<img v-else src="@/assets/img/icons/close-menu.svg" alt="">
 				</div>
 			</div>
-		</div>
-		
+		</div>	
 
 		<transition>
-			<div class="right-menu" v-show="stateMenu">
-
-				<div class="topSection">
-					<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
-						<img src="@/assets/img/icons/close-menu.svg" alt="">
-					</div>
-				</div>
-
+			<div class="hide-menu" v-show="stateMenu">
 				<nav>
 					<router-link to="/services">Сервисам</router-link>
 					<router-link to="/adv">Рекламодателям</router-link>
@@ -71,7 +63,7 @@
 		},
 
 		methods:{
-			rightMenu: function(){
+			hideMenu: function(){
 				//console.log(111);
 
 				//this.stateMenu = (this.stateMenu == false)? true: false;
@@ -170,6 +162,10 @@
 
 				.btn-menu{
 					margin-left: 50px;
+
+					img{
+						//background: red;
+					}
 				}
 
 				.top-navigation{
@@ -177,50 +173,40 @@
 						text-transform: uppercase;
 						font-size: 14px;
 						text-decoration: none;
-						color: #000;
+						color: #656565;
 						letter-spacing: .5px;
+						transition: .2s;
+
+						&:hover{
+							color: $accent;
+						}
 					}
 				}
 			}
 		}
 	
 		
-		.right-menu{
-			height: 100%;
-			width: 350px;
-			position: fixed;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			z-index: 999;
+		.hide-menu{
+			width: 100%;
+			//border: 1px solid red;
 			background: #fff;
-			box-shadow: -3px 0px 5px 0px rgba(0,0,0,0.25);
-			padding: 5px;
-			padding-left: 30px;
-
-			.topSection{
-				display: flex;
-				justify-content: flex-end;
-				width: 100%;
-				//border: 1px solid red;
-				margin-bottom: 30px;
-
-				.btn-menu{
-					
-				}
-			}
+			border-top: 1px solid #e2e2e2;
 
 			nav{
-				display: flex;
-				flex-direction: column;
-
+				max-width: 1140px;
+				margin: 0 auto;
+				padding: 10px 15px;
+				
 				a{
-					width: 100%;
-					margin-bottom: 10px;
-					padding: 5px 0;
 					text-decoration: none;
 					color: #000;
-					font-size: 18px;
+					font-size: 16px;
+					margin-right: 20px;
+					transition: .2s;
+
+					&:hover{
+						color: $accent;
+					}
 				}
 			}
 		}
