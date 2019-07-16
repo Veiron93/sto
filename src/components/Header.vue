@@ -1,24 +1,28 @@
 <template>
 	<header>
-		<div class="left-section">
-			<div class="logo">
-				<a href="">
-					<img src="@/assets/img/logo.png" alt="">
-				</a>
+
+		<div class="header-wrapper">
+			<div class="left-section">
+				<div class="logo">
+					<a href="">
+						<img src="@/assets/img/logo.png" alt="">
+					</a>
+				</div>
+
+				<v-select v-model="selected" :clearable="clearable" :placeholder="placeholder" class="cities" label="name" :options="cities" ></v-select>
 			</div>
 
-			<v-select v-model="selected" :clearable="clearable" :placeholder="placeholder" class="cities" label="name" :options="cities" ></v-select>
+			<div class="rigth-section">
+				<div class="top-navigation">
+					<router-link to="/">Автосервисы</router-link>
+				</div>
+
+				<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
+					<img src="@/assets/img/icons/menu.svg" alt="">
+				</div>
+			</div>
 		</div>
-
-		<div class="rigth-section">
-			<div class="top-navigation">
-				<router-link to="/">Автосервисы</router-link>
-			</div>
-
-			<div class="btn-menu" v-on:click="stateMenu = !stateMenu">
-				<img src="@/assets/img/icons/menu.svg" alt="">
-			</div>
-		</div>
+		
 
 		<transition>
 			<div class="right-menu" v-show="stateMenu">
@@ -83,92 +87,103 @@
 </script>
 
 <style lang="scss">
-	header{
+	header{		
 		width: 100%;
-		max-width: 1140px;
-		padding: 0px 15px;
-		margin: 0px auto;
-		border: 1px solid;
-		height: 60px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		background: #fff;
+		box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.1);
 
-		.left-section, .rigth-section{
+		.header-wrapper{
+			max-width: 1140px;
+			padding: 0px 15px;
+			margin: 0px auto;
+			height: 60px;
 			display: flex;
 			align-items: center;
-		}
+			justify-content: space-between;
 
-		.left-section{
-			.logo{
-				margin-right: 100px;
-				a{
-					img{
-						height: 36px;
-						display: block;
-					}
-				}
+			.left-section, .rigth-section{
+				display: flex;
+				align-items: center;
 			}
 
-			.cities{
-				//border: 1px solid;
-				width: 100%;
-				min-width: 204px;	
-				background: #fff;	
-				.vs__dropdown-toggle{
-					//border: none;
-
-					.vs__selected{
-						//padding: 0;
-					}
-
-					input{
-						&::-webkit-input-placeholder{
-							color: #ADADAD
+			.left-section{
+				.logo{
+					margin-right: 100px;
+					a{
+						img{
+							height: 36px;
+							display: block;
 						}
-		
 					}
 				}
-				
-			}	
-		}
 
-		// кнопка открыть-закрыть меню
-		.btn-menu{
-			//border: 1px solid;
-			flex: none;
-			width: 40px;
-			height: 40px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			cursor: pointer;
-			margin-right: -10px;
+				.cities{
+					//border: 1px solid;
+					width: 100%;
+					min-width: 204px;	
+					background: #fff;	
 
-			img{
-				width: 20px;
-				height: 20px;
-				display: block;
+					.vs__dropdown-toggle{
+						border: none;
+
+						.vs__selected{
+							//padding: 0;
+						}
+
+						input{
+							&::-webkit-input-placeholder{
+								color: #ADADAD
+							}
+			
+						}
+					}
+
+					.vs__dropdown-menu{
+						border-radius: 4px;
+						border: none;
+						margin-top: 5px;
+					}
+					
+				}	
 			}
-		}
 
-		.rigth-section{
-
+			// кнопка открыть-закрыть меню
 			.btn-menu{
-				margin-left: 50px;
+				//border: 1px solid;
+				flex: none;
+				width: 40px;
+				height: 40px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+				margin-right: -10px;
+
+				img{
+					width: 20px;
+					height: 20px;
+					display: block;
+				}
 			}
 
-			.top-navigation{
-				a{
-					text-transform: uppercase;
-					font-size: 14px;
-					text-decoration: none;
-					color: #000;
-					letter-spacing: .5px;
+			.rigth-section{
+
+				.btn-menu{
+					margin-left: 50px;
+				}
+
+				.top-navigation{
+					a{
+						text-transform: uppercase;
+						font-size: 14px;
+						text-decoration: none;
+						color: #000;
+						letter-spacing: .5px;
+					}
 				}
 			}
 		}
-		
+	
 		
 		.right-menu{
 			height: 100%;

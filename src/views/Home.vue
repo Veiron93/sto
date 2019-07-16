@@ -25,28 +25,10 @@
 							<div slot="no-options">В данной категории пока нет услуг 😱</div>
 						</v-select>
 
-						<!--
-						<v-autocomplete 
-						v-model="selectCategoryService" 
-						:items="categoriesServices"  
-						item-text="name"
-						item-value="id"
-						label="Категория"
-						outline/>
-
-						<v-autocomplete 
-						v-model="selectService" 
-						:items="sortingServices"  
-						item-text="name"
-						item-value="id"
-						label="Услуга"
-						no-data-text="В данной категории пока нет услуг 😱"
-
-						:disabled="stateSelectService"
-						outline/>
-						-->
+						<div class="search">
+							<input type="text" placeholder="Поиск" >
+						</div>
 					</div>
-				
 				</div>
 			</div>
 		</div>
@@ -62,9 +44,8 @@
 				</div>
 
 				<div class="col-xl-9">
-					<div class="name-service" style="display: none;">
-						<h2>Замена тормозных дисков</h2>
-						<h3>Найдено СТО: 13</h3>
+					<div class="name-service" v-show="nameService.states">
+						<h2>{{nameService.title}}</h2>
 					</div>
 
 					<div class="topServices" v-show="showTopServices">
@@ -77,7 +58,12 @@
 						</div>
 					</div>
 
-					<div class="list-sto"  v-show="showListCarServices">
+					<div class="listCarServices"  v-show="showListCarServices">
+						
+						<div class="countCarServices">
+							<p>Найдено СТО: 13</p>
+						</div>
+
 						<CardCarService :globalTime="globalTime" :carService="carService" v-for="carService in carServices" :value="carService.value" :key="carService.value"/>	
 					</div>
 				</div>
@@ -103,6 +89,11 @@ export default {
 			selectCategoryService: null,
 			categoriesServices: [],
 
+			nameService: {
+				states: false,
+				title: "",
+			},
+
 			optionSelectCategoryService: {
 				placeholder: "Выберите категорию",
 				clearable: false,
@@ -114,7 +105,6 @@ export default {
 				disabled: true,
 				value: null
 			},
-			
 
 			carServices: [
 
@@ -191,6 +181,9 @@ export default {
 			}else{
 				this.showTopServices = true;
 				this.showListCarServices = false;
+
+				this.nameService.states = false;
+				this.nameService.title = "";
 			}
 		}
 	},
@@ -248,6 +241,9 @@ export default {
 				this.showTopServices = false;
 				this.showListCarServices = true;
 			}
+
+			this.nameService.states = true;
+			this.nameService.title = this.selectService.name;
 		},
 
 		selectCategoryService: function () {

@@ -48,7 +48,7 @@
 		
 		border-radius: 4px;
 		margin-bottom: 16px;
-		box-shadow: 0px 1px 3.8px 0.2px rgba(0, 0, 0, 0.2);
+		box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
 		background: #fff;
 		padding: 8px 10px;
 
@@ -85,7 +85,7 @@
 
 		.carServices{
 			border-top: 1px solid #e2e2e2; 
-			margin-top: 1px;
+			margin-top: 5px;
 			padding-top: 3px;
 			a{
 				margin-right: 10px;
