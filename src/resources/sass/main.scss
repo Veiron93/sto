@@ -103,17 +103,25 @@ body{
 	}
 }
 
-.left-side__index{
+.leftSide{
 	//border: 1px solid red;
 	height: 100%;
 
 	.links{
-		p{
+		a{
 			margin: 0;
 			cursor: pointer;
-			font-size: 16px;
-			color: #fa3102;
-			display: inline;
+			font-size: 13px;
+			text-transform: uppercase;
+			text-decoration: none;
+			color: #000;
+			font-weight: bold;
+			transition: color .2s;
+			letter-spacing: 1px;
+
+			&:hover{
+				color: $accent;
+			}
 		}
 	}
 }

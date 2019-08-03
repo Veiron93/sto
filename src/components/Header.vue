@@ -3,7 +3,7 @@
 		<div class="header-wrapper">
 			<div class="left-section">
 				<div class="logo">
-					<a href="">
+					<a href="/">
 						<img src="@/assets/img/logo.png" alt="">
 					</a>
 				</div>

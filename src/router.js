@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Services from './views/Services.vue'
 import Adv from './views/Adv.vue'
 import About from './views/About.vue'
+import Top from './views/Top.vue'
 
 Vue.use(Router)
 
@@ -32,6 +33,12 @@ export default new Router({
       name: 'about',
       component: About
     },
+
+    {
+      path: '/top',
+      name: 'top',
+      component: Top
+    }
 
     // {
     //   path: '/about',

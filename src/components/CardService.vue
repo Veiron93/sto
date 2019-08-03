@@ -7,16 +7,19 @@
 				</a>
 			</div>
 
-			<div class="views" title="Просмотры за неделю">
-				<p>{{topService.countViewWeek}}</p>
+			<div class="views" title="Просмотров">
+				<p>{{topService.countView}}</p>
+				<img src="@/assets/img/icons/eye.svg" alt="">
 			</div>
 		</div>
 		
-		<div class="carServices" v-if="topService.carServices">
-			<a href="" v-for="carService in topService.carServices">
-				{{carService.price}}
+		
+		<div class="carServices" v-if="topService.car_services.length > 0">
+			<a href="" v-for="carService in topService.car_services">
+				{{carService.name}}
 			</a>
 		</div>
+	
 	</div>
 </template>
 
@@ -36,8 +39,16 @@
 			}
 		},
 
-		methods:{
+		mounted(){
 			
+		},
+
+		methods:{
+	
+		},
+
+		created: function(){
+
 		}
 	}
 </script>
@@ -62,7 +73,11 @@
 					text-decoration: none;
 					font-size: 16px;
 					color: #484848;
-
+					transition: color .2s;
+					
+					&:hover{
+						color: $accent;
+					}
 				}
 			}
 
@@ -72,13 +87,15 @@
 				margin-left: 30px;
 
 				img{
-					height: 16px;
+					height: 12px;
+					margin-left: 4px;
+					opacity: .8;
 				}
 				p{
 					margin: 0;
 					margin-left: 5px;
-					color: #484848;
-					font-size: 14px;
+					color: #8c8c8c;
+					font-size: 13px;
 				}
 			}
 		}

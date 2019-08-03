@@ -35,30 +35,39 @@
 
 		<div class="container">
 			<div class="row">
+
+				<!-- LEFT SIDE -->
+
 				<div class="col-xl-3">
-					<div class="left-side__index">
-						<div class="links" v-on:click="showSections" v-show="!showTopServices">
-							<p>🔥 Популярные услуги</p>
-						</div>
-					</div>
+					<LeftSide/>	
 				</div>
 
+
 				<div class="col-xl-9">
+
+					<!-- NEME SERVICE -->
+
 					<div class="name-service" v-show="nameService.states">
 						<h2>{{nameService.title}}</h2>
 					</div>
 
-					<div class="topServices" v-show="showTopServices">
+					
+					<!-- TOP SERVICES -->
+
+					<div class="topServices" v-show="stateTopServices">
 						<div class="topServices-heading">
-							<p>🔥 Популярные услуги за неделю</p>
+							<p>🔥 Популярные услуги</p>
 						</div>
 
 						<div class="topServices-list">
-							<CardService :top-service="topService" v-for="topService in getTopServices" :value="topService.value" :key="topService.value"/>
+							<CardService :top-service="topService" v-for="topService in topServices" :value="topService.value" :key="topService.value"/>
 						</div>
 					</div>
 
-					<div class="listCarServices"  v-show="showListCarServices">
+
+					<!-- LIST CARSERVICES -->
+
+					<div class="listCarServices"  v-show="stateListCarServices">
 						
 						<div class="countCarServices">
 							<p>Найдено СТО: 13</p>
@@ -78,17 +87,27 @@ export default {
 
 	data() {
 		return{
-			showTopServices: true,
-			showListCarServices: false,
 
+			// Состояние элементов при загрузке
+			stateTopServices: true,
+			stateListCarServices: false,
+
+			// ТОП услуг
+			topServices: null,
+
+			// время
 			globalTime: 0,
+
+			// выбранная категория услуг
+			selectCategoryService: null,
+			categoriesServices: [],
 			
+			// выбранная услуга
 			selectService: null,
 			services: null,
 			
-			selectCategoryService: null,
-			categoriesServices: [],
 
+			// название выбранной услуги
 			nameService: {
 				states: false,
 				title: "",
@@ -106,8 +125,11 @@ export default {
 				value: null
 			},
 
-			carServices: [
 
+
+
+
+			carServices: [
 				{
 					name: 'ГиперАвто', 
 					price: "3500", 
@@ -137,8 +159,22 @@ export default {
 		}
 	},
 
+	components: {
+		CardCarService: () => import('@/components/CardCarService.vue'),
+		CardService: () => import('@/components/CardService.vue'),
+		LeftSide: () => import('@/components/LeftSide.vue'),
+	},
+
 
 	mounted() {
+		this.$http
+			.post('http://localhost:4000/services/top')
+			.then(response => (this.topServices = response.data))
+			.catch(() => {
+				this.errored = true;
+			});
+
+
 		this.$http
 			.get('http://localhost:4000/services/all')
 			.then(response => (this.services = response.data))
@@ -151,12 +187,7 @@ export default {
 			.then(response => (this.categoriesServices = response.data))
 			.catch(() => {
 				this.errored = true;
-			});	
-	},
-
-	components: {
-		CardCarService: () => import('@/components/CardCarService.vue'),
-		CardService: () => import('@/components/CardService.vue'),
+			});
 	},
 
 	methods: {
@@ -175,9 +206,11 @@ export default {
 		},
 
 		showSections: function(){
+
 			if(this.showTopServices == true){
 				this.showTopServices = false;
 				this.showListCarServices = true;
+
 			}else{
 				this.showTopServices = true;
 				this.showListCarServices = false;
@@ -185,7 +218,7 @@ export default {
 				this.nameService.states = false;
 				this.nameService.title = "";
 			}
-		}
+		},
 	},
 
 	computed:{
@@ -211,46 +244,20 @@ export default {
 				
 			return [];
 		},
-
-		getTopServices: function (){
-
-			if(this.services != null){
-
-				let services = this.services;
-
-				const filteredServices = services.filter(service => service.countViewWeek != 0);
-
-				filteredServices.sort(function(a, b){
-					return b.countViewWeek-a.countViewWeek
-				})
-
-				filteredServices.splice(15);
-
-				return filteredServices;
-			}
-			
-			return null;
-		}
 	},
 
 	watch:{
 
 		selectService: function () {
 
-			if(this.showTopServices == true){
-				this.showTopServices = false;
-				this.showListCarServices = true;
+			if(this.stateTopServices == true){
+				this.stateTopServices = false;
+				this.stateListCarServices = true;
 			}
 
 			this.nameService.states = true;
 			this.nameService.title = this.selectService.name;
 		},
-
-		selectCategoryService: function () {
-
-			//console.log(this.selectCategoryService.id)
-		}
-		
 	},
 
 	created: function(){
