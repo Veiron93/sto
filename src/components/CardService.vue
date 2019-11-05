@@ -54,9 +54,7 @@
 </script>
 
 <style lang="scss">
-	.CardService{
-		//border: 1px solid;
-		
+	.CardService{	
 		border-radius: 4px;
 		margin-bottom: 16px;
 		box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
@@ -70,14 +68,7 @@
 
 			.name{
 				a{
-					text-decoration: none;
-					font-size: 16px;
-					color: #484848;
-					transition: color .2s;
-					
-					&:hover{
-						color: $accent;
-					}
+	
 				}
 			}
 
@@ -85,6 +76,7 @@
 				display: flex;
 				align-items: center;
 				margin-left: 30px;
+				display: none;
 
 				img{
 					height: 12px;
@@ -101,15 +93,14 @@
 		}
 
 		.carServices{
-			border-top: 1px solid #e2e2e2; 
+			border-top: 1px solid #f5f5f5; 
 			margin-top: 5px;
 			padding-top: 3px;
 			a{
 				margin-right: 10px;
 				text-decoration: none;
-				font-size: 13px;
-				font-weight: bold;
-				color: #1F9FD4;
+				font-size: 14px;
+				color: $accentHover;
 			}
 		}
 	}

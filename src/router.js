@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import ListCarServices from './views/CarServices/ListCarServices.vue'
 import Services from './views/Services.vue'
 import Adv from './views/Adv.vue'
 import About from './views/About.vue'
@@ -14,6 +15,12 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+
+    {
+      path: '/carservices',
+      name: 'carservices',
+      component: ListCarServices
     },
 
     {

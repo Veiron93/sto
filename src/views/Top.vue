@@ -1,7 +1,6 @@
 <template>
 	<div class="top">
 
-
 		<div class="container">
 			<div class="row">
 
@@ -11,12 +10,12 @@
 					<LeftSide/>	
 				</div>
 
-
 				<div class="col-xl-9">
 
 					<!-- TOP SERVICES -->
 
 					<div class="topServices">
+
 						<div class="topServices-heading">
 							<p>🔥 Популярные услуги</p>
 						</div>
@@ -44,7 +43,7 @@ export default {
 	},
 
 	components: {
-		CardCarService: () => import('@/components/CardCarService.vue'),
+		CardService: () => import('@/components/CardService.vue'),
 		LeftSide: () => import('@/components/LeftSide.vue'),
 	},
 

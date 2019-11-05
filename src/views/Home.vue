@@ -3,6 +3,7 @@
 
 		<div class="container">
 			<div class="row">
+
 				<div class="col-12">
 					
 					<div class="block-sorting">
@@ -26,7 +27,7 @@
 						</v-select>
 
 						<div class="search">
-							<input type="text" placeholder="Поиск" >
+							<input type="text" placeholder="Поиск">
 						</div>
 					</div>
 				</div>
@@ -44,6 +45,10 @@
 
 
 				<div class="col-xl-9">
+
+					<div class="top-banners">
+							
+					</div>
 
 					<!-- NEME SERVICE -->
 
@@ -126,36 +131,38 @@ export default {
 			},
 
 
+			carServices: null,
 
 
+			// carServices: [
+			// 	{
+			// 		name: 'ГиперАвто', 
+			// 		price: "3500", 
+			// 		phone: '89146565789', 
+			// 		schedule: {
+			// 			days: ["10:00-18:00", "10:00-22:28", "10:00-18:00", "10:00-22:00", "10:00-18:00", "10:00-18:00", "10:00-22:00"],
+			// 			exceptions: [
+			// 				{date: "1557579600-10:00-14:00", type: "at"}
+			// 			],
+			// 		}
+			// 	},
 
-			carServices: [
-				{
-					name: 'ГиперАвто', 
-					price: "3500", 
-					phone: '89146565789', 
-					schedule: {
-						days: ["10:00-18:00", "10:00-22:28", "10:00-18:00", "10:00-22:00", "10:00-18:00", "10:00-18:00", "10:00-22:00"],
-						exceptions: [
-							{date: "1557579600-10:00-14:00", type: "at"}
-						],
-					}
-				},
+			// 	{
+			// 		name: 'Мотор', 
+			// 		price: "2500", 
+			// 		phone: '84242678990', 
+					
+			// 		schedule: {
 
-				{
-					name: 'Мотор', 
-					price: "2500", 
-					phone: '84242678990', 
-					schedule: {
-						days: ["11:00-23:00", "11:00-22:25", "11:00-24:00", "11:00-18:00", "11:00-18:00", "", ""],
-						exceptions: [
-							{date: "1557671400", type: "df"},
-							{date: "1558270800-12:00-23:48", type: "at"},
-							{date: "1548270800-12:00-19:00", type: "at"},
-						],
-					}
-				},
-			],
+			// 			days: ["11:00-23:00", "11:00-22:25", "11:00-24:00", "11:00-18:00", "11:00-18:00", "", ""],
+			// 			exceptions: [
+			// 				{date: "1557671400", type: "df"},
+			// 				{date: "1558270800-12:00-23:48", type: "at"},
+			// 				{date: "1548270800-12:00-19:00", type: "at"},
+			// 			],
+			// 		}
+			// 	},
+			// ],
 		}
 	},
 
@@ -167,6 +174,7 @@ export default {
 
 
 	mounted() {
+
 		this.$http
 			.post('http://localhost:4000/services/top')
 			.then(response => (this.topServices = response.data))
@@ -203,21 +211,6 @@ export default {
 				}
 
 			}, 1000);
-		},
-
-		showSections: function(){
-
-			if(this.showTopServices == true){
-				this.showTopServices = false;
-				this.showListCarServices = true;
-
-			}else{
-				this.showTopServices = true;
-				this.showListCarServices = false;
-
-				this.nameService.states = false;
-				this.nameService.title = "";
-			}
 		},
 	},
 
@@ -257,6 +250,18 @@ export default {
 
 			this.nameService.states = true;
 			this.nameService.title = this.selectService.name;
+
+
+			// делаем запрос в базу для получения сервис которые предоставляют данную услугу
+			this.$http
+				.get('http://localhost:4000/services/car-services/listCarService', {
+					id: [this.selectService.id]
+				})
+				.then(response => (this.categoriesServices = response.data))
+				.catch(() => {
+					this.errored = true;
+				});
+
 		},
 	},
 

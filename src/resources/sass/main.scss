@@ -1,6 +1,19 @@
+*{
+	color: $font;
+	font-family: 'Ubuntu', sans-serif;
+}
+
 body{
 	background: #f5f5f5;
-	font-family: 'Ubuntu', sans-serif;
+}
+
+a{
+	transition: color .2s;
+	text-decoration: none;
+	
+	&:hover{
+		color: $accent;
+	}
 }
 
 // список сервисов
@@ -8,9 +21,20 @@ body{
 	//border: 1px solid;
 }
 
+.top-banners{
+	height: 100px;
+	margin-bottom: 25px;
+
+	background: url('./assets/img/test/test.jpg') no-repeat;
+	background-position: center;
+	background-size: cover;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
 
 .block-sorting{
-	margin-top: 30px;
+	//margin-top: 30px;
 	margin-bottom: 30px;
 	border-radius: 4px;
 	padding: 5px;
@@ -66,7 +90,7 @@ body{
 			height: 40px;
 			
 			&::-webkit-input-placeholder{
-				color: #ADADAD
+				color: #ADADAD;
 			}
 		}
 	}
@@ -95,6 +119,7 @@ body{
 			font-size: 18px;
 			margin: 0;
 			letter-spacing: .2px;
+			font-weight: bold;
 		}
 	}
 
@@ -103,28 +128,7 @@ body{
 	}
 }
 
-.leftSide{
-	//border: 1px solid red;
-	height: 100%;
 
-	.links{
-		a{
-			margin: 0;
-			cursor: pointer;
-			font-size: 13px;
-			text-transform: uppercase;
-			text-decoration: none;
-			color: #000;
-			font-weight: bold;
-			transition: color .2s;
-			letter-spacing: 1px;
-
-			&:hover{
-				color: $accent;
-			}
-		}
-	}
-}
 
 .listCarServices{
 
